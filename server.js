@@ -15,15 +15,16 @@ const PORT = process.env.PORT || 8000; // Setting the port from environment vari
 
 // CORS Configuration
 const corsOptions = {
-  origin: "https://salesblinkfrontend.vercel.app", // Allowing requests only from this frontend origin
-  credentials: true, // Allowing cookies to be sent along with the request
-  methods: "GET,POST,PUT,DELETE", // Enabling specific HTTP methods
+  origin: "https://salesblinkfrontend.vercel.app", // Allow your frontend's origin
+  credentials: true, // Allow cookies
+  methods: "GET,POST,PUT,DELETE,OPTIONS", // Include OPTIONS for preflight requests
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Allow necessary headers
 };
+app.use(cors(corsOptions));
 
 app.use(express.json()); // Middleware to parse JSON request bodies
 app.use(cookieParser()); // Middleware to parse cookies from requests
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded request bodies
-app.use(cors(corsOptions)); // Enabling CORS with the defined options
 
 // Routes
 app.use("/api/v1/email", sequenceRoutes); // API route for handling email-related functionality
