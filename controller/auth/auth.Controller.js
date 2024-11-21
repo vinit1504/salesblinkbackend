@@ -138,10 +138,10 @@ export const userLogin = async (req, res) => {
 
     // Store the token in an HTTP-only cookie for secure authentication
     res.cookie("token", token, {
-      httpOnly: true, // Prevent client-side JavaScript from accessing the token
-      // secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      sameSite: "strict", // Prevent CSRF attacks
-      maxAge: 3600000, // Token expiration time in milliseconds (1 hour)
+      httpOnly: true, // Prevent access by JavaScript
+      secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", // Cross-site cookies for Netlify
+      maxAge: 3600000, // 1 hour
     });
 
     // Omit the password from the user object before sending the response
