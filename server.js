@@ -14,17 +14,14 @@ const app = express(); // Creating an Express application
 const PORT = process.env.PORT || 8000; // Setting the port from environment variable or default to 8000
 
 // CORS Configuration
-const corsOptions = {
-  origin: "https://salesblinkfrontend.vercel.app", // Allow your frontend's origin
-  credentials: true, // Allow cookies
-  methods: "GET,POST,PUT,DELETE,OPTIONS", // Include OPTIONS for preflight requests
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Allow necessary headers
-};
-app.use(cors(corsOptions));
-
-app.use(express.json()); // Middleware to parse JSON request bodies
-app.use(cookieParser()); // Middleware to parse cookies from requests
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded request bodies
+app.use(cors({
+  origin: ['https://salesblinkfrontend.vercel.app', "http://localhost:5173"], // This specifies your frontend's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' , 'PATCH'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma'],
+  credentials: true, // Headers your frontend may send
+}));// Apply CORS first
+app.use(express.json()); // Parse JSON bodies
+app.use(cookieParser()); // Handle cookies
 
 // Routes
 app.use("/api/v1/email", sequenceRoutes); // API route for handling email-related functionality
