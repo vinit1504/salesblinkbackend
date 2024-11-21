@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 8000; // Setting the port from environment vari
 
 // CORS Configuration
 app.use(cors({
-  origin: ['https://salesblinkfrontend.vercel.app', "http://localhost:5173"], // This specifies your frontend's URL
+  origin: ['https://salesblink.netlify.app', "http://localhost:5173"], // This specifies your frontend's URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' , 'PATCH'], // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma'],
   credentials: true, // Headers your frontend may send
