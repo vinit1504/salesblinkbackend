@@ -1,33 +1,34 @@
-import express from "express"; // Importing Express.js
-import dotenv from "dotenv"; // Importing dotenv to load environment variables
-import cookieParser from "cookie-parser"; // Importing cookie-parser to handle cookies
-import cors from "cors"; // Importing CORS for enabling cross-origin requests
-import { DataBaseConnect } from "./database/dataBaseConnection.js"; // Importing database connection function
-import sequenceRoutes from "./routes/sequence/sequence.Routes.js"; // Importing routes related to email sequence
-import authRoutes from "./routes/auth/auth.Routes.js"; // Importing authentication-related routes
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { DataBaseConnect } from "./database/dataBaseConnection.js";
+import sequenceRoutes from "./routes/sequence/sequence.Routes.js";
+import authRoutes from "./routes/auth/auth.Routes.js";
 
-dotenv.config(); // Load environment variables from the .env file
-DataBaseConnect(); // Connect to the database
+dotenv.config();
+DataBaseConnect();
 
-const app = express(); // Creating an Express application
-
-const PORT = process.env.PORT || 8000; // Setting the port from environment variable or default to 8000
+const app = express();
+const PORT = process.env.PORT || 8000;
 
 // CORS Configuration
 app.use(cors({
-  origin: ['https://salesblink.netlify.app', "http://localhost:5173"], // This specifies your frontend's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' , 'PATCH'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma'],
-  credentials: true, // Headers your frontend may send
-}));// Apply CORS first
-app.use(express.json()); // Parse JSON bodies
-app.use(cookieParser()); // Handle cookies
+  origin: ['https://salesblinkfrontend.netlify.app', "http://localhost:5173"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma', 'X-Requested-With'],
+  credentials: true, // Allow credentials (cookies, etc.)
+}));
+
+app.options('*', cors()); // Handle preflight requests explicitly
+app.use(express.json());
+app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/email", sequenceRoutes); // API route for handling email-related functionality
-app.use("/api/v1/auth", authRoutes); // API route for authentication functionality
+app.use("/api/v1/email", sequenceRoutes);
+app.use("/api/v1/auth", authRoutes);
 
-// Start the server and listen on the defined port
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`); // Log a message when the server is running
+  console.log(`Server is running on port ${PORT}`);
 });
